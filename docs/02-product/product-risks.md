@@ -1,0 +1,52 @@
+# Product Risks
+
+We acknowledge the following risks and define our mitigation directions.
+
+- **Over-automation**
+  - *Impact*: Changes are deployed without sufficient review, causing outages.
+  - *Likelihood*: High.
+  - *Mitigation*: Strict enforcement of the Approval Model and mandatory human gates for high-risk actions.
+- **Hallucination**
+  - *Impact*: Agents invent APIs or business rules that do not exist.
+  - *Likelihood*: High.
+  - *Mitigation*: Providing strict context boundaries via the Context Engine; grounding agents with RAG on official docs.
+- **Incorrect Code**
+  - *Impact*: Bugs are introduced into the product.
+  - *Likelihood*: Medium.
+  - *Mitigation*: Mandatory automated testing loop; QA agent must verify all code before merge.
+- **Security Issues**
+  - *Impact*: Vulnerabilities or leaked secrets.
+  - *Likelihood*: Medium.
+  - *Mitigation*: Dedicated Security Reviewer agent; pre-commit secret scanning hooks.
+- **Cost Explosion**
+  - *Impact*: Runaway agents burn thousands of dollars in API tokens.
+  - *Likelihood*: Low (if capped).
+  - *Mitigation*: Hard token limits per task; exponential backoff on retries; budget alerts.
+- **Agent Conflicts**
+  - *Impact*: Frontend and Backend agents overwrite each other's work.
+  - *Likelihood*: Medium.
+  - *Mitigation*: Project Manager enforces branch isolation and lock mechanisms on files.
+- **Context Corruption**
+  - *Impact*: The Project Memory becomes filled with outdated or incorrect information.
+  - *Likelihood*: Medium.
+  - *Mitigation*: Allowing users to manually prune the Memory Engine; automated memory compression.
+- **Vendor Lock-in**
+  - *Impact*: We rely entirely on one model provider, making us vulnerable to their pricing/downtime.
+  - *Likelihood*: Medium.
+  - *Mitigation*: The Model Router architecture, allowing instant switching between OpenAI, Anthropic, Gemini, etc.
+- **Complexity**
+  - *Impact*: Users are overwhelmed and abandon the product.
+  - *Likelihood*: High.
+  - *Mitigation*: Simple, conversational UI hiding the orchestration complexity.
+- **User Trust**
+  - *Impact*: Users do not trust the AI and revert to manual coding.
+  - *Likelihood*: Medium.
+  - *Mitigation*: Organizational transparency; explainable AI; showing exact diffs before execution.
+- **Runaway Execution**
+  - *Impact*: An infinite loop of agents talking to agents.
+  - *Likelihood*: Low.
+  - *Mitigation*: Strict depth limits on agent-to-agent communication; emergency kill switch.
+- **Malicious Repository Instructions**
+  - *Impact*: An attacker hides prompt injection in a dependency, taking over the agent.
+  - *Likelihood*: Low.
+  - *Mitigation*: Running agents in strictly isolated, ephemeral containers with no outside network access except whitelisted endpoints.

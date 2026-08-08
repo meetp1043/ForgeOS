@@ -1,0 +1,31 @@
+# Glossary
+
+- **Agent**: An autonomous or semi-autonomous AI entity with a specific role, system prompt, and set of tools.
+- **Agent hierarchy**: The organizational structure defining reporting lines (e.g., Executor reports to Manager).
+- **Executive agent**: A high-level agent responsible for strategic planning and cross-domain orchestration (e.g., CEO, Principal Engineer).
+- **Manager agent**: An agent responsible for breaking down features into tasks and assigning them to specialists.
+- **Specialist agent**: An agent with a narrow, deep focus (e.g., Database Engineer, Frontend Developer).
+- **Orchestrator**: The core system component that routes messages, handles state, and manages agent lifecycles.
+- **Planner**: An agent or component responsible for creating the step-by-step implementation plan.
+- **Executor**: An agent responsible for writing the code or running the commands to fulfill a task.
+- **Reviewer**: An agent responsible for auditing the Executor's work against requirements and governance standards.
+- **Workflow**: A predefined sequence of agent interactions designed to accomplish a standard process (e.g., the PR Review Workflow).
+- **Task**: A specific unit of work assigned to an agent.
+- **Subtask**: A smaller, atomic step within a task.
+- **Project**: The overarching goal or software application being built.
+- **Workspace**: The isolated environment (filesystem, memory) where a project is developed.
+- **Artifact**: A persistent file or document produced by an agent (e.g., an ADR, a source file).
+- **Memory**: Persistent storage of past events, decisions, and context.
+- **Context**: The relevant subset of information provided to an agent for a specific task.
+- **Tool**: A defined function an agent can execute (e.g., `read_file`, `run_query`).
+- **Plugin**: An extension to ForgeOS that adds new tools, models, or workflow capabilities.
+- **Model**: The underlying Large Language Model (LLM) powering the agent (e.g., GPT-4, Claude 3).
+- **Model provider**: The company or entity hosting the model (e.g., OpenAI, Anthropic).
+- **Model router**: A component that dynamically selects the best model for a given task.
+- **Human approval**: An explicit gate requiring a human user to authorize an action.
+- **Run**: A single execution trace of a workflow or task.
+- **Execution**: The act of an agent carrying out a tool call or plan.
+- **Environment**: The runtime context (development, staging, production).
+- **Repository**: The version-controlled storage for the project's source code and artifacts.
+- **Production**: The live environment serving real users.
+- **Incident**: An unexpected failure or degradation in the system requiring SRE or human intervention.
