@@ -28,6 +28,13 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
+forgeos:
+  security:
+    jwt:
+      secret: "4f6a7d5b8e9c0a1f2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a" # Development only, at least 256 bits
+      access-token-expiration: 900000 # 15 minutes
+      refresh-token-expiration: 604800000 # 7 days
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
