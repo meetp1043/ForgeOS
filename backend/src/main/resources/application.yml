@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: forgeos-backend
+  profiles:
+    active: dev
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  info:
+    env:
+      enabled: true
+
+logging:
+  level:
+    root: INFO
+    com.forgeos: DEBUG
+    org.springframework.modulith: DEBUG
