@@ -1,5 +1,6 @@
 package com.forgeos.model.domain;
 
+import java.time.Instant;
 import java.util.Map;
 
 public class ModelResponse {
@@ -8,92 +9,47 @@ public class ModelResponse {
     private String provider;
     private String model;
     private String finishReason;
-    private Integer inputTokens;
-    private Integer outputTokens;
-    private Integer totalTokens;
+    private TokenUsage tokenUsage;
     private Long latencyMs;
     private String requestId;
+    private boolean cached;
+    private boolean fallbackUsed;
+    private Instant createdAt;
 
     public ModelResponse() {
+        this.createdAt = Instant.now();
     }
 
-    public String getContent() {
-        return content;
-    }
+    public String getContent() { return content; }
+    public void setContent(String content) { this.content = content; }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    public Map<String, Object> getStructuredOutput() { return structuredOutput; }
+    public void setStructuredOutput(Map<String, Object> structuredOutput) { this.structuredOutput = structuredOutput; }
 
-    public Map<String, Object> getStructuredOutput() {
-        return structuredOutput;
-    }
+    public String getProvider() { return provider; }
+    public void setProvider(String provider) { this.provider = provider; }
 
-    public void setStructuredOutput(Map<String, Object> structuredOutput) {
-        this.structuredOutput = structuredOutput;
-    }
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
 
-    public String getProvider() {
-        return provider;
-    }
+    public String getFinishReason() { return finishReason; }
+    public void setFinishReason(String finishReason) { this.finishReason = finishReason; }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
+    public TokenUsage getTokenUsage() { return tokenUsage; }
+    public void setTokenUsage(TokenUsage tokenUsage) { this.tokenUsage = tokenUsage; }
 
-    public String getModel() {
-        return model;
-    }
+    public Long getLatencyMs() { return latencyMs; }
+    public void setLatencyMs(Long latencyMs) { this.latencyMs = latencyMs; }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
+    public String getRequestId() { return requestId; }
+    public void setRequestId(String requestId) { this.requestId = requestId; }
 
-    public String getFinishReason() {
-        return finishReason;
-    }
+    public boolean isCached() { return cached; }
+    public void setCached(boolean cached) { this.cached = cached; }
 
-    public void setFinishReason(String finishReason) {
-        this.finishReason = finishReason;
-    }
+    public boolean isFallbackUsed() { return fallbackUsed; }
+    public void setFallbackUsed(boolean fallbackUsed) { this.fallbackUsed = fallbackUsed; }
 
-    public Integer getInputTokens() {
-        return inputTokens;
-    }
-
-    public void setInputTokens(Integer inputTokens) {
-        this.inputTokens = inputTokens;
-    }
-
-    public Integer getOutputTokens() {
-        return outputTokens;
-    }
-
-    public void setOutputTokens(Integer outputTokens) {
-        this.outputTokens = outputTokens;
-    }
-
-    public Integer getTotalTokens() {
-        return totalTokens;
-    }
-
-    public void setTotalTokens(Integer totalTokens) {
-        this.totalTokens = totalTokens;
-    }
-
-    public Long getLatencyMs() {
-        return latencyMs;
-    }
-
-    public void setLatencyMs(Long latencyMs) {
-        this.latencyMs = latencyMs;
-    }
-
-    public String getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
+    public Instant getCreatedAt() { return createdAt; }
+    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 }

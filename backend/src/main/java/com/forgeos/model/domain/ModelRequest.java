@@ -16,95 +16,58 @@ public class ModelRequest {
     private UUID tenantId;
     private UUID projectId;
     private String correlationId;
+    
+    // Phase 24 Additions
+    private ModelProfile profile;
+    private Long timeoutMs;
+    private Double budget; // Represents the allowed budget in standard currency
+    private String outputSchema; // JSON Schema for structured output
 
     public ModelRequest() {
     }
 
-    public String getSystemInstruction() {
-        return systemInstruction;
-    }
+    public String getSystemInstruction() { return systemInstruction; }
+    public void setSystemInstruction(String systemInstruction) { this.systemInstruction = systemInstruction; }
 
-    public void setSystemInstruction(String systemInstruction) {
-        this.systemInstruction = systemInstruction;
-    }
+    public List<String> getUserMessages() { return userMessages; }
+    public void setUserMessages(List<String> userMessages) { this.userMessages = userMessages; }
 
-    public List<String> getUserMessages() {
-        return userMessages;
-    }
+    public String getContext() { return context; }
+    public void setContext(String context) { this.context = context; }
 
-    public void setUserMessages(List<String> userMessages) {
-        this.userMessages = userMessages;
-    }
+    public Set<ModelCapability> getRequiredCapabilities() { return requiredCapabilities; }
+    public void setRequiredCapabilities(Set<ModelCapability> requiredCapabilities) { this.requiredCapabilities = requiredCapabilities; }
 
-    public String getContext() {
-        return context;
-    }
+    public Double getTemperature() { return temperature; }
+    public void setTemperature(Double temperature) { this.temperature = temperature; }
 
-    public void setContext(String context) {
-        this.context = context;
-    }
+    public Integer getMaxOutputTokens() { return maxOutputTokens; }
+    public void setMaxOutputTokens(Integer maxOutputTokens) { this.maxOutputTokens = maxOutputTokens; }
 
-    public Set<ModelCapability> getRequiredCapabilities() {
-        return requiredCapabilities;
-    }
+    public ModelPolicy getPolicy() { return policy; }
+    public void setPolicy(ModelPolicy policy) { this.policy = policy; }
 
-    public void setRequiredCapabilities(Set<ModelCapability> requiredCapabilities) {
-        this.requiredCapabilities = requiredCapabilities;
-    }
+    public ModelPrivacyClassification getPrivacyClassification() { return privacyClassification; }
+    public void setPrivacyClassification(ModelPrivacyClassification privacyClassification) { this.privacyClassification = privacyClassification; }
 
-    public Double getTemperature() {
-        return temperature;
-    }
+    public UUID getTenantId() { return tenantId; }
+    public void setTenantId(UUID tenantId) { this.tenantId = tenantId; }
 
-    public void setTemperature(Double temperature) {
-        this.temperature = temperature;
-    }
+    public UUID getProjectId() { return projectId; }
+    public void setProjectId(UUID projectId) { this.projectId = projectId; }
 
-    public Integer getMaxOutputTokens() {
-        return maxOutputTokens;
-    }
+    public String getCorrelationId() { return correlationId; }
+    public void setCorrelationId(String correlationId) { this.correlationId = correlationId; }
 
-    public void setMaxOutputTokens(Integer maxOutputTokens) {
-        this.maxOutputTokens = maxOutputTokens;
-    }
+    public ModelProfile getProfile() { return profile; }
+    public void setProfile(ModelProfile profile) { this.profile = profile; }
 
-    public ModelPolicy getPolicy() {
-        return policy;
-    }
+    public Long getTimeoutMs() { return timeoutMs; }
+    public void setTimeoutMs(Long timeoutMs) { this.timeoutMs = timeoutMs; }
 
-    public void setPolicy(ModelPolicy policy) {
-        this.policy = policy;
-    }
+    public Double getBudget() { return budget; }
+    public void setBudget(Double budget) { this.budget = budget; }
 
-    public ModelPrivacyClassification getPrivacyClassification() {
-        return privacyClassification;
-    }
-
-    public void setPrivacyClassification(ModelPrivacyClassification privacyClassification) {
-        this.privacyClassification = privacyClassification;
-    }
-
-    public UUID getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(UUID tenantId) {
-        this.tenantId = tenantId;
-    }
-
-    public UUID getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(UUID projectId) {
-        this.projectId = projectId;
-    }
-
-    public String getCorrelationId() {
-        return correlationId;
-    }
-
-    public void setCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-    }
+    public String getOutputSchema() { return outputSchema; }
+    public void setOutputSchema(String outputSchema) { this.outputSchema = outputSchema; }
 }

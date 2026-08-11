@@ -4,7 +4,9 @@ import com.forgeos.model.domain.ModelCapability;
 import com.forgeos.model.domain.ModelPrivacyClassification;
 import com.forgeos.model.domain.ModelRequest;
 import com.forgeos.model.domain.ModelResponse;
-import com.forgeos.model.domain.exception.ModelGatewayException;
+import com.forgeos.model.domain.TokenUsage;
+import com.forgeos.model.domain.ModelError;
+import com.forgeos.model.domain.exception.ProviderException;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
@@ -34,7 +36,7 @@ public class MockModelProvider implements ModelProvider {
     }
 
     @Override
-    public ModelResponse execute(ModelRequest request) throws ModelGatewayException {
+    public ModelResponse execute(ModelRequest request) throws ProviderException {
         ModelResponse response = new ModelResponse();
         response.setContent("This is a mock response to: " + 
                 (request.getUserMessages() != null && !request.getUserMessages().isEmpty() 
@@ -43,9 +45,7 @@ public class MockModelProvider implements ModelProvider {
         response.setProvider(getProviderName());
         response.setModel("mock-model");
         response.setFinishReason("STOP");
-        response.setInputTokens(10);
-        response.setOutputTokens(20);
-        response.setTotalTokens(30);
+        response.setTokenUsage(new TokenUsage(10, 20, 0));
         response.setLatencyMs(5L);
         response.setRequestId(UUID.randomUUID().toString());
         

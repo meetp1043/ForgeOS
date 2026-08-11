@@ -4,11 +4,11 @@ import com.forgeos.model.domain.ModelCapability;
 import com.forgeos.model.domain.ModelPrivacyClassification;
 import com.forgeos.model.domain.ModelRequest;
 import com.forgeos.model.domain.ModelResponse;
-import com.forgeos.model.domain.exception.ModelGatewayException;
-import com.forgeos.model.domain.exception.ProviderUnavailableException;
+import com.forgeos.model.domain.TokenUsage;
+import com.forgeos.model.domain.ModelError;
+import com.forgeos.model.domain.exception.ProviderException;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ public class OllamaModelProvider implements ModelProvider {
     }
 
     @Override
-    public ModelResponse execute(ModelRequest request) throws ModelGatewayException {
+    public ModelResponse execute(ModelRequest request) throws ProviderException {
         try {
             ChatClient.PromptSpec promptSpec = chatClient.prompt()
                     .user(String.join("\n", request.getUserMessages()));
@@ -64,16 +64,19 @@ public class OllamaModelProvider implements ModelProvider {
             response.setFinishReason(chatResponse.getResult().getMetadata().getFinishReason());
             
             if (chatResponse.getMetadata().getUsage() != null) {
-                response.setInputTokens(chatResponse.getMetadata().getUsage().getPromptTokens().intValue());
-                response.setOutputTokens(chatResponse.getMetadata().getUsage().getGenerationTokens().intValue());
-                response.setTotalTokens(chatResponse.getMetadata().getUsage().getTotalTokens().intValue());
+                response.setTokenUsage(new TokenUsage(
+                    chatResponse.getMetadata().getUsage().getPromptTokens().intValue(),
+                    chatResponse.getMetadata().getUsage().getGenerationTokens().intValue(),
+                    0 // cachedTokens not easily available in spring-ai Ollama default
+                ));
             }
 
             response.setRequestId(UUID.randomUUID().toString());
             return response;
 
         } catch (Exception e) {
-            throw new ProviderUnavailableException(getProviderName(), e.getMessage());
+            // Treat spring-ai execution exceptions as transient/timeout/server error
+            throw new ProviderException("Ollama provider failed: " + e.getMessage(), e, ModelError.SERVER_ERROR, true);
         }
     }
 }

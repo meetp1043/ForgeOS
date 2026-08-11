@@ -2,10 +2,12 @@ package com.forgeos.model.application;
 
 import com.forgeos.model.domain.ModelPolicy;
 import com.forgeos.model.domain.ModelPrivacyClassification;
+import com.forgeos.model.domain.ModelRequest;
 import com.forgeos.model.domain.exception.ModelGatewayException;
 import com.forgeos.model.infrastructure.provider.ModelProvider;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -17,43 +19,48 @@ public class ModelRouter {
         this.providers = providers;
     }
 
-    public ModelProvider selectProvider(ModelPolicy policy, ModelPrivacyClassification privacyClassification) {
+    public List<ModelProvider> getProviderChain(ModelRequest request) {
+        ModelPolicy policy = request.getPolicy() != null ? request.getPolicy() : ModelPolicy.DEFAULT;
+        ModelPrivacyClassification privacy = request.getPrivacyClassification() != null 
+                ? request.getPrivacyClassification() 
+                : ModelPrivacyClassification.PUBLIC;
+
+        List<ModelProvider> chain = new ArrayList<>();
+
         if (policy == ModelPolicy.MOCK_ONLY) {
-            return findProvider("MOCK");
+            addIfAvailable(chain, "MOCK");
+            return chain;
         }
 
-        if (privacyClassification == ModelPrivacyClassification.RESTRICTED || policy == ModelPolicy.LOCAL_ONLY) {
-            ModelProvider ollama = findProvider("OLLAMA");
-            if (ollama != null && ollama.isAvailable()) {
-                return ollama;
-            }
-            if (privacyClassification == ModelPrivacyClassification.RESTRICTED) {
+        if (privacy == ModelPrivacyClassification.RESTRICTED || policy == ModelPolicy.LOCAL_ONLY) {
+            addIfAvailable(chain, "OLLAMA");
+            if (chain.isEmpty()) {
                 throw new ModelGatewayException("No secure local provider available for RESTRICTED data");
             }
+            return chain;
         }
 
-        ModelProvider openai = findProvider("OPENAI");
-        if (openai != null && openai.isAvailable()) {
-            return openai;
-        }
-        
-        ModelProvider ollama = findProvider("OLLAMA");
-        if (ollama != null && ollama.isAvailable()) {
-            return ollama;
+        // Standard fallback chain: Try primary (OPENAI), fallback to local (OLLAMA), then MOCK
+        addIfAvailable(chain, "OPENAI");
+        addIfAvailable(chain, "OLLAMA");
+        addIfAvailable(chain, "MOCK");
+
+        if (chain.isEmpty()) {
+            throw new ModelGatewayException("No providers available to handle the request");
         }
 
-        ModelProvider mock = findProvider("MOCK");
-        if (mock != null && mock.isAvailable()) {
-            return mock;
-        }
-
-        throw new ModelGatewayException("No providers available to handle the request");
+        return chain;
     }
 
-    private ModelProvider findProvider(String name) {
-        return providers.stream()
-                .filter(p -> p.getProviderName().equals(name))
+    private void addIfAvailable(List<ModelProvider> chain, String providerName) {
+        providers.stream()
+                .filter(p -> p.getProviderName().equals(providerName))
                 .findFirst()
-                .orElse(null);
+                .ifPresent(p -> {
+                    // Phase 24: Real check would verify QUARANTINED status and health endpoints
+                    if (p.isAvailable()) {
+                        chain.add(p);
+                    }
+                });
     }
 }

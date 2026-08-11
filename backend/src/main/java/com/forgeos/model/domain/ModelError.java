@@ -1,0 +1,15 @@
+package com.forgeos.model.domain;
+
+public enum ModelError {
+    INVALID_REQUEST,
+    AUTHENTICATION_ERROR,
+    AUTHORIZATION_ERROR,
+    RATE_LIMIT,
+    TIMEOUT,
+    PROVIDER_UNAVAILABLE,
+    CONTEXT_LIMIT,
+    CONTENT_POLICY,
+    SERVER_ERROR,
+    NETWORK_ERROR,
+    UNKNOWN
+}
