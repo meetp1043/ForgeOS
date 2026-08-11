@@ -1,0 +1,21 @@
+package com.forgeos.agent.domain;
+
+public enum ExecutionStatus {
+    CREATED,
+    INITIALIZING,
+    PLANNING,
+    EXECUTING,
+    WAITING_FOR_TOOL,
+    WAITING_FOR_APPROVAL,
+    WAITING_FOR_DEPENDENCY,
+    OBSERVING,
+    REPLANNING,
+    VALIDATING,
+    COMPLETING,
+    COMPLETED,
+    FAILED,
+    CANCELLED,
+    TIMED_OUT,
+    PAUSED,
+    QUARANTINED
+}
