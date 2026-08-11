@@ -1,0 +1,20 @@
+package com.forgeos.tools.domain;
+
+public enum ToolPermission {
+    FILESYSTEM_READ,
+    FILESYSTEM_WRITE,
+    GIT_READ,
+    GIT_COMMIT,
+    GIT_PUSH,
+    GITHUB_READ,
+    GITHUB_WRITE,
+    BUILD_EXECUTE,
+    TEST_EXECUTE,
+    DATABASE_READ,
+    DATABASE_WRITE,
+    DATABASE_MIGRATE,
+    CLOUD_READ,
+    CLOUD_DEPLOY,
+    CLOUD_DELETE,
+    TERMINAL_EXECUTE
+}
