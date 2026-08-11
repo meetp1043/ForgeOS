@@ -1,0 +1,14 @@
+package com.forgeos.team.domain;
+
+public enum AgentRole {
+    TEAM_LEAD,
+    ARCHITECT,
+    BACKEND_DEVELOPER,
+    FRONTEND_DEVELOPER,
+    DATABASE_ENGINEER,
+    QA_ENGINEER,
+    SECURITY_ENGINEER,
+    DEVOPS_ENGINEER,
+    CODE_REVIEWER,
+    PRODUCT_AGENT
+}
