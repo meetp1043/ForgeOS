@@ -26,17 +26,20 @@ public class SecurityConfiguration {
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final com.forgeos.organization.domain.security.TenantValidationFilter tenantValidationFilter;
+    private final ApiKeyAuthenticationFilter apiKeyAuthenticationFilter;
 
     public SecurityConfiguration(JwtAuthenticationFilter jwtAuthFilter,
                                  CustomUserDetailsService userDetailsService,
                                  CustomAuthenticationEntryPoint authenticationEntryPoint,
                                  CustomAccessDeniedHandler accessDeniedHandler,
-                                 com.forgeos.organization.domain.security.TenantValidationFilter tenantValidationFilter) {
+                                 com.forgeos.organization.domain.security.TenantValidationFilter tenantValidationFilter,
+                                 ApiKeyAuthenticationFilter apiKeyAuthenticationFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.accessDeniedHandler = accessDeniedHandler;
         this.tenantValidationFilter = tenantValidationFilter;
+        this.apiKeyAuthenticationFilter = apiKeyAuthenticationFilter;
     }
 
     @Bean
@@ -52,7 +55,8 @@ public class SecurityConfiguration {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(apiKeyAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(jwtAuthFilter, ApiKeyAuthenticationFilter.class)
                 .addFilterAfter(tenantValidationFilter, JwtAuthenticationFilter.class)
                 .exceptionHandling(exceptions -> exceptions
                         .authenticationEntryPoint(authenticationEntryPoint)

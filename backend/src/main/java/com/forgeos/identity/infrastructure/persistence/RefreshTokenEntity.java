@@ -23,36 +23,28 @@ public class RefreshTokenEntity extends BaseEntity {
 
     @Column(nullable = false)
     private boolean revoked = false;
+    
+    @Column(name = "family_id", nullable = false)
+    private UUID familyId;
+    
+    @Column(name = "replaced_by_token")
+    private String replacedByToken;
 
-    public UUID getUserId() {
-        return userId;
-    }
+    public UUID getUserId() { return userId; }
+    public void setUserId(UUID userId) { this.userId = userId; }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
 
-    public String getToken() {
-        return token;
-    }
+    public Instant getExpiresAt() { return expiresAt; }
+    public void setExpiresAt(Instant expiresAt) { this.expiresAt = expiresAt; }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+    public boolean isRevoked() { return revoked; }
+    public void setRevoked(boolean revoked) { this.revoked = revoked; }
 
-    public Instant getExpiresAt() {
-        return expiresAt;
-    }
+    public UUID getFamilyId() { return familyId; }
+    public void setFamilyId(UUID familyId) { this.familyId = familyId; }
 
-    public void setExpiresAt(Instant expiresAt) {
-        this.expiresAt = expiresAt;
-    }
-
-    public boolean isRevoked() {
-        return revoked;
-    }
-
-    public void setRevoked(boolean revoked) {
-        this.revoked = revoked;
-    }
+    public String getReplacedByToken() { return replacedByToken; }
+    public void setReplacedByToken(String replacedByToken) { this.replacedByToken = replacedByToken; }
 }
