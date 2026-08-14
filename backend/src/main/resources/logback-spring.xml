@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <springProperty scope="context" name="springAppName" source="spring.application.name"/>
+    
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"service":"${springAppName}"}</customFields>
+            <!-- Field masking for secrets -->
+            <jsonGeneratorDecorator class="net.logstash.logback.mask.MaskingJsonGeneratorDecorator">
+                <valueMasker class="net.logstash.logback.mask.RegexValueMasker">
+                    <regex>(?i)(password|token|api[_-]?key|secret|authorization)["=:]\s*([^\s,;\"'}]+)</regex>
+                </valueMasker>
+            </jsonGeneratorDecorator>
+        </encoder>
+    </appender>
+
+    <!-- Configure Spring to use this for all ROOT logging -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
