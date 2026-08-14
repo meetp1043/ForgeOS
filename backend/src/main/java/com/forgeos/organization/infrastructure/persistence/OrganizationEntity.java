@@ -12,8 +12,23 @@ public class OrganizationEntity extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(name = "tenant_id", nullable = false)
+    private java.util.UUID tenantId;
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public java.util.UUID getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(java.util.UUID tenantId) {
+        this.tenantId = tenantId;
     }
 
     public void setName(String name) {

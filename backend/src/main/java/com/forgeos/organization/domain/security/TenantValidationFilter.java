@@ -3,6 +3,8 @@ package com.forgeos.organization.domain.security;
 import com.forgeos.identity.domain.security.SecurityUser;
 import com.forgeos.organization.infrastructure.persistence.OrganizationMembershipEntity;
 import com.forgeos.organization.infrastructure.persistence.OrganizationMembershipRepository;
+import com.forgeos.tenant.infrastructure.persistence.TenantEntity;
+import com.forgeos.tenant.infrastructure.persistence.TenantRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,9 +23,11 @@ import java.util.UUID;
 public class TenantValidationFilter extends OncePerRequestFilter {
 
     private final OrganizationMembershipRepository membershipRepository;
+    private final TenantRepository tenantRepository;
 
-    public TenantValidationFilter(OrganizationMembershipRepository membershipRepository) {
+    public TenantValidationFilter(OrganizationMembershipRepository membershipRepository, TenantRepository tenantRepository) {
         this.membershipRepository = membershipRepository;
+        this.tenantRepository = tenantRepository;
     }
 
     @Override
@@ -41,6 +45,14 @@ public class TenantValidationFilter extends OncePerRequestFilter {
                 UUID tenantId = UUID.fromString(tenantIdHeader);
                 SecurityUser user = (SecurityUser) authentication.getPrincipal();
 
+                Optional<TenantEntity> tenantOpt = tenantRepository.findById(tenantId);
+                if (tenantOpt.isEmpty() || !"ACTIVE".equals(tenantOpt.get().getStatus())) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Tenant does not exist or is inactive");
+                    return;
+                }
+
+                // Default logic: User must have membership in an org mapping to this tenant.
+                // Assuming Org ID == Tenant ID for single-org-per-tenant model
                 Optional<OrganizationMembershipEntity> membership = 
                         membershipRepository.findByOrganizationIdAndUserId(tenantId, user.getId());
 
