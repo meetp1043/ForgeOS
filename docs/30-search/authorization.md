@@ -1,0 +1,3 @@
+# AUTHORIZATION
+
+Document under construction.
